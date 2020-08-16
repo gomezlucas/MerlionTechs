@@ -1,144 +1,253 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Row, Col, Label } from 'reactstrap'
+import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation'
+import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { IRootState } from 'app/shared/reducers'
+import { makeStyles } from '@material-ui/core/styles'
 
-import { getEntity, updateEntity, createEntity, reset } from './sales.reducer';
-import { ISales } from 'app/shared/model/sales.model';
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import { getEntity, updateEntity, createEntity, reset } from './sales.reducer'
+import { ISales } from 'app/shared/model/sales.model'
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils'
+import { mapIdList } from 'app/shared/util/entity-utils'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import TextField from '@material-ui/core/TextField'
+import MenuItem from '@material-ui/core/MenuItem'
+import Grid from '@material-ui/core/Grid'
+import Button2 from '@material-ui/core/Button'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import SaveIcon from '@material-ui/icons/Save'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import NativeSelect from '@material-ui/core/NativeSelect'
+import Input from '@material-ui/core/Input'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import { valuesIn } from 'lodash'
 
 export interface ISalesUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-export const SalesUpdate = (props: ISalesUpdateProps) => {
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+const useStyles = makeStyles({
+  titleStyle: {
+    marginBottom: '1rem'
+  },
+  paperStyle: {
+    backgroundColor: '#EBEBEB',
+    padding: '2rem 2rem'
+  },
+  buttonStyle: {
+    backgroundColor: '#004f87',
+    '&:hover': {
+      background: '#5E99C5'
+    }
+  },
+  buttonsContainer: {
+    marginTop: '2rem'
+  }
+})
 
-  const { salesEntity, loading, updating } = props;
+export const SalesUpdate = (props: ISalesUpdateProps) => {
+  const classes = useStyles()
+
+  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id)
+
+  const { salesEntity, loading, updating } = props
+  const [description, setDescription] = useState('')
+  const [state, setState] = useState('')
+  const [date, setDate] = useState('')
 
   const handleClose = () => {
-    props.history.push('/sales');
-  };
+    props.history.push('/sales')
+  }
+
+  const onChangeDesc = e => {
+    setDescription(e.target.value)
+  }
+
+  const onChangeState = e => {
+    setState(e.target.value)
+  }
+
+  const onChangeDate = e => {
+    setDate(e.target.value)
+  }
 
   useEffect(() => {
     if (isNew) {
-      props.reset();
+      props.reset()
     } else {
-      props.getEntity(props.match.params.id);
+      props.getEntity(props.match.params.id)
+      console.log(salesEntity)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (props.updateSuccess) {
-      handleClose();
+      handleClose()
     }
-  }, [props.updateSuccess]);
+  }, [props.updateSuccess])
 
   const saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
+      if (description) {
+        values = { ...values, description: description }
+      } else {
+        values = { ...values, description: salesEntity.description }
+      }
+
+      if (state) {
+        values = { ...values, state: state }
+      } else {
+        values = { ...values, state: salesEntity.state }
+      }
+
+      if (date) {
+        values = { ...values, date: date }
+      } else {
+        values = { ...values, date: salesEntity.date }
+      }
+
+      console.log(values, 'values')
       const entity = {
         ...salesEntity,
-        ...values,
-      };
+        ...values
+      }
 
       if (isNew) {
-        props.createEntity(entity);
+        props.createEntity(entity)
+        setDescription('')
+        setState('')
+        setDate('')
       } else {
-        props.updateEntity(entity);
+        props.updateEntity(entity)
+        setDescription('')
+        setState('')
+        setDate('')
       }
     }
-  };
+  }
 
   return (
-    <div>
-      <Row className="justify-content-center">
-        <Col md="8">
-          <h2 id="testApp.sales.home.createOrEditLabel">
-            <Translate contentKey="testApp.sales.home.createOrEditLabel">Create or edit a Sales</Translate>
-          </h2>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col md="8">
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <AvForm model={isNew ? {} : salesEntity} onSubmit={saveEntity}>
-              {!isNew ? (
-                <AvGroup>
-                  <Label for="sales-id">
-                    <Translate contentKey="global.field.id">ID</Translate>
-                  </Label>
-                  <AvInput id="sales-id" type="text" className="form-control" name="id" required readOnly />
-                </AvGroup>
-              ) : null}
-              <AvGroup>
-                <Label id="descriptionLabel" for="sales-description">
-                  <Translate contentKey="testApp.sales.description">Description</Translate>
-                </Label>
-                <AvField id="sales-description" type="text" name="description" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="stateLabel" for="sales-state">
-                  <Translate contentKey="testApp.sales.state">State</Translate>
-                </Label>
-                <AvInput
-                  id="sales-state"
-                  type="select"
-                  className="form-control"
-                  name="state"
-                  value={(!isNew && salesEntity.state) || 'IN_CHARGE'}
+    <Paper className={classes.paperStyle}>
+      <Typography variant='h4' className={classes.titleStyle}>
+        Crear o Editar Sales
+      </Typography>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <AvForm model={isNew ? {} : salesEntity} onSubmit={saveEntity}>
+          {!isNew ? (
+            <Grid container spacing={8} xs={12}>
+              <Grid item xs={12}>
+                <FormControl>
+                  <InputLabel htmlFor='sales-id'> ID </InputLabel>
+                  <Input id='sales-id' aria-describedby='my-helper-text' name='id' disabled value={salesEntity.id} />
+                </FormControl>
+              </Grid>
+            </Grid>
+          ) : null}
+          <Grid container xs={12}>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor='sales-description'> Description </InputLabel>
+                <Input
+                  id='sales-description'
+                  aria-describedby='description-helper'
+                  name='description'
+                  value={description ? description : salesEntity.description}
+                  onChange={e => {
+                    onChangeDesc(e)
+                  }}
+                  onClick={() => description === '' && setDescription(salesEntity.description)}
+                />
+                <FormHelperText id='description-helper'>Insert Description</FormHelperText>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid container spacing={6}>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor='State'>State</InputLabel>
+                <NativeSelect
+                  value={state ? state : salesEntity.state}
+                  onChange={e => {
+                    onChangeState(e)
+                  }}
+                  inputProps={{
+                    name: 'state',
+                    id: 'sales-state'
+                  }}
+                  onClick={() => state === '' && setState(salesEntity.state)}
                 >
-                  <option value="IN_CHARGE">{translate('testApp.State.IN_CHARGE')}</option>
-                  <option value="SHIPPED">{translate('testApp.State.SHIPPED')}</option>
-                  <option value="DELIVERED">{translate('testApp.State.DELIVERED')}</option>
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
-                <Label id="dateLabel" for="sales-date">
-                  <Translate contentKey="testApp.sales.date">Date</Translate>
-                </Label>
-                <AvField id="sales-date" type="date" className="form-control" name="date" />
-              </AvGroup>
-              <Button tag={Link} id="cancel-save" to="/sales" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
-                &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
-              </Button>
-              &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
-                &nbsp;
-                <Translate contentKey="entity.action.save">Save</Translate>
-              </Button>
-            </AvForm>
-          )}
-        </Col>
-      </Row>
-    </div>
-  );
-};
+                  <option value='IN_CHARGE'>IN_CHARGE </option>
+                  <option value='SHIPPED'>SHIPPED</option>
+                  <option value='DELIVERED'>DELIVERED</option>
+                </NativeSelect>
+                <FormHelperText>Some important helper text</FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                id='sales-date'
+                label='Date'
+                type='date'
+                defaultValue='2017-05-24'
+                value={date ? date : salesEntity.date}
+                onChange={e => {
+                  onChangeDate(e)
+                }}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={3} className={classes.buttonsContainer}>
+            <Grid item>
+              <Link to='/sales' style={{ textDecoration: 'none' }}>
+                <Button2 variant='contained' color='primary' className={classes.buttonStyle} startIcon={<ArrowBackIcon />}>
+                  Volver
+                </Button2>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Button2
+                id='save-entity'
+                type='submit'
+                disabled={updating}
+                variant='contained'
+                color='primary'
+                className={classes.buttonStyle}
+                startIcon={<SaveIcon />}
+              >
+                Guardar
+              </Button2>
+            </Grid>
+          </Grid>
+        </AvForm>
+      )}
+    </Paper>
+  )
+}
 
 const mapStateToProps = (storeState: IRootState) => ({
   salesEntity: storeState.sales.entity,
   loading: storeState.sales.loading,
   updating: storeState.sales.updating,
-  updateSuccess: storeState.sales.updateSuccess,
-});
+  updateSuccess: storeState.sales.updateSuccess
+})
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset,
-};
+  reset
+}
 
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
+type StateProps = ReturnType<typeof mapStateToProps>
+type DispatchProps = typeof mapDispatchToProps
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalesUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(SalesUpdate)
