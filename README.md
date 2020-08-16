@@ -7,6 +7,7 @@ detalle de cada venta individual. Utilizando Jhipster y Material UI
 
 Se instaló:
 
+- JHipster https://www.jhipster.tech
 - Postgresql 12.x.x https://www.postgresql.org/download/
 - Java 8 https://www.java.com/es/download/
 - Node https://nodejs.org/es/download/
@@ -27,7 +28,7 @@ Se creo una branch en el repositorio por cada componente modificado:
 - SalesDetailComponent
 - salesComponent
 
-JDL utilizado para crear la applicación Sales:
+JDL utilizado para crear la applicación Jhipster:
 
 ```sh
 entity Sales {
@@ -50,13 +51,13 @@ jhipster import-jdl maquetador-jdl.jh
 
 ![Sales Screen](readmeImg/SalesScreen.png)
 
-![Sales View](readmeImg/SalesViewn.png)
+![Sales View](readmeImg/SalesView.png)
 
 ![Sales new](readmeImg/SalesNew.png)
 
 ![Sales Update](readmeImg/SalesUpdate.png)
 
-![Sales Update](readmeImg/SalesDelete.png)
+![Sales Delete](readmeImg/salesDelete.png)
 
 ## Development
 
