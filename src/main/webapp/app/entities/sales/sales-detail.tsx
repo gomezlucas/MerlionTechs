@@ -1,74 +1,129 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Button, Row, Col } from 'reactstrap'
+import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './sales.reducer';
-import { ISales } from 'app/shared/model/sales.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { IRootState } from 'app/shared/reducers'
+import { getEntity } from './sales.reducer'
+import { ISales } frogitm 'app/shared/model/sales.model'
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import EditIcon from '@material-ui/icons/Edit'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import Button2 from '@material-ui/core/Button'
+import Avatar from '@material-ui/core/Avatar'
+import IconButton from '@material-ui/core/IconButton'
+import Paper from '@material-ui/core/Paper'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import 'fontsource-roboto'
 
 export interface ISalesDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+    maxWidth: 500,
+    margin: '0 auto'
+  },
+  CardHeader: {
+    background: '#2A6A9E',
+    color: '#FFFFFF',
+    textAlign: 'right'
+  },
+  title: {
+    fontSize: 20
+  },
+  pos: {
+    marginBottom: 12
+  },
+  buttonStyle: {
+    backgroundColor: '#004f87',
+    '&:hover': {
+      background: '#5E99C5'
+    }
+  },
+  EditButtonStyle: {
+    color: '#FFFFFF'
+  },
+  avatar: {
+    backgroundColor: '#FFFFFF',
+    color: '#5E99C5'
+  }
+})
+
 export const SalesDetail = (props: ISalesDetailProps) => {
   useEffect(() => {
-    props.getEntity(props.match.params.id);
-  }, []);
+    props.getEntity(props.match.params.id)
+  }, [])
 
-  const { salesEntity } = props;
+  const classes = useStyles()
+  const { salesEntity } = props
+  const title = salesEntity ?  `Order : ${salesEntity.id}` : null
+
   return (
-    <Row>
-      <Col md="8">
-        <h2>
-          <Translate contentKey="testApp.sales.detail.title">Sales</Translate> [<b>{salesEntity.id}</b>]
-        </h2>
-        <dl className="jh-entity-details">
-          <dt>
-            <span id="description">
-              <Translate contentKey="testApp.sales.description">Description</Translate>
-            </span>
-          </dt>
-          <dd>{salesEntity.description}</dd>
-          <dt>
-            <span id="state">
-              <Translate contentKey="testApp.sales.state">State</Translate>
-            </span>
-          </dt>
-          <dd>{salesEntity.state}</dd>
-          <dt>
-            <span id="date">
-              <Translate contentKey="testApp.sales.date">Date</Translate>
-            </span>
-          </dt>
-          <dd>{salesEntity.date ? <TextFormat value={salesEntity.date} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}</dd>
-        </dl>
-        <Button tag={Link} to="/sales" replace color="info">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
-        </Button>
-        &nbsp;
-        <Button tag={Link} to={`/sales/${salesEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
-        </Button>
-      </Col>
-    </Row>
-  );
-};
+    <Card className={classes.root}>
+      <CardHeader
+        avatar={
+          <Avatar aria-label='Sales' className={classes.avatar}>
+            S
+          </Avatar>
+        }
+        title={title}
+        subheader='Sales'
+        className={classes.CardHeader}
+        action={
+          <Link to={`/sales/${salesEntity.id}/edit`} style={{ textDecoration: 'none' }}>
+            <IconButton aria-label='edit' className={classes.EditButtonStyle}>
+              <EditIcon />
+            </IconButton>
+          </Link>
+        }
+      />
+      <CardContent>
+        <Typography variant='h5' component='h2'>
+          Description:
+        </Typography>
+        <Typography className={classes.pos} color='textSecondary'>
+          {salesEntity.description}
+        </Typography>
+        <Typography variant='h5' component='h2'>
+          Date:
+        </Typography>
+        <Typography className={classes.pos} color='textSecondary'>
+          {salesEntity.date ? <TextFormat value={salesEntity.date} type='date' format={APP_LOCAL_DATE_FORMAT} /> : null}
+        </Typography>
+        <Typography variant='h5' component='h2'>
+          State:
+        </Typography>
+        <Typography className={classes.pos} color='textSecondary'>
+          {salesEntity.state}
+        </Typography>
+      </CardContent>
+
+      <CardActions>
+        <Link to='/sales' style={{ textDecoration: 'none' }}>
+          <Button2 variant='contained' color='primary' className={classes.buttonStyle} startIcon={<ArrowBackIcon />}>
+            Volver
+          </Button2>
+        </Link>
+      </CardActions>
+    </Card>
+  )
+}
 
 const mapStateToProps = ({ sales }: IRootState) => ({
-  salesEntity: sales.entity,
-});
+  salesEntity: sales.entity
+})
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity }
 
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
+type StateProps = ReturnType<typeof mapStateToProps>
+type DispatchProps = typeof mapDispatchToProps
 
-export default connect(mapStateToProps, mapDispatchToProps)(SalesDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(SalesDetail)
