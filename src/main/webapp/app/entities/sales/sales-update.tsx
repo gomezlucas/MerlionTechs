@@ -86,10 +86,22 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
   useEffect(() => {
     if (isNew) {
       props.reset()
+      
     } else {
       props.getEntity(props.match.params.id)
-    }
+          }
   }, [])
+
+
+  useEffect(() => {
+if (isNew){
+  setDescription('')
+}else{
+  setDescription(salesEntity.description)
+}
+  }, [salesEntity])
+
+
 
   useEffect(() => {
     if (props.updateSuccess) {
@@ -163,12 +175,11 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
                   id='sales-description'
                   aria-describedby='description-helper'
                   name='description'
-                  value={description ? description : salesEntity.description}
+                  value={description}
                   onChange={e => {
                     onChangeDesc(e)
                   }}
-                  onClick={() => description === '' && setDescription(salesEntity.description)}
-                />
+                 />
                 <FormHelperText id='description-helper'>Inserte Descripción </FormHelperText>
               </FormControl>
             </Grid>

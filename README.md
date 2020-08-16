@@ -57,7 +57,9 @@ jhipster import-jdl maquetador-jdl.jh
 
 ![Sales Update](readmeImg/SalesUpdate.png)
 
-![Sales Delete](readmeImg/salesDelete.png)
+# Video con las funcionalidades
+
+![video con las screens](readmeImg/merlionTechsVids.avi)
 
 ## Development
 
