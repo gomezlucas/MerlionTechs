@@ -57,10 +57,6 @@ jhipster import-jdl maquetador-jdl.jh
 
 ![Sales Update](readmeImg/SalesUpdate.png)
 
-# Video con las funcionalidades
-
-![video con las screens](readmeImg/merlionTechsVids.avi)
-
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
