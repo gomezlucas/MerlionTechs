@@ -116,13 +116,13 @@ export const Sales = (props: ISalesProps) => {
                     ID
                   </Typography> </TableCell>
                   <TableCell className={classes.TableCellStyle} align="left"><Typography  >
-                    DESCRIPTION
+                    DESCRIPCION
                   </Typography> </TableCell>
                   <TableCell className={classes.TableCellStyle} align="left"><Typography  >
-                    STATE
+                    ESTADO
                   </Typography> </TableCell>
                   <TableCell className={classes.TableCellStyle} align="left"><Typography >
-                    DATE
+                    FECHA
                   </Typography></TableCell>
                   <TableCell className={classes.TableCellStyle} align="left"></TableCell>
                 </TableRow>

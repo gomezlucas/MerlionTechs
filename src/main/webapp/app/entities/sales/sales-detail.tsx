@@ -68,7 +68,7 @@ export const SalesDetail = (props: ISalesDetailProps) => {
 
   const classes = useStyles()
   const { salesEntity } = props
-  const title = salesEntity ?  `Order : ${salesEntity.id}` : null
+  const title = salesEntity ?  `Id : ${salesEntity.id}` : null
 
   return (
     <Card className={classes.root}>
@@ -91,19 +91,19 @@ export const SalesDetail = (props: ISalesDetailProps) => {
       />
       <CardContent>
         <Typography variant='h5' component='h2'>
-          Description:
+          Descripción:
         </Typography>
         <Typography className={classes.pos} color='textSecondary'>
           {salesEntity.description}
         </Typography>
         <Typography variant='h5' component='h2'>
-          Date:
+          Fecha:
         </Typography>
         <Typography className={classes.pos} color='textSecondary'>
           {salesEntity.date ? <TextFormat value={salesEntity.date} type='date' format={APP_LOCAL_DATE_FORMAT} /> : null}
         </Typography>
         <Typography variant='h5' component='h2'>
-          State:
+          Estado:
         </Typography>
         <Typography className={classes.pos} color='textSecondary'>
           {salesEntity.state}

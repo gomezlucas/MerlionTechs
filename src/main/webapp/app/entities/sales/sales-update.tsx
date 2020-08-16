@@ -152,13 +152,13 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
       ) : null}
 
       {loading ? (
-        <p>Loading...</p>
+        <p>Cargando...</p>
       ) : (
         <AvForm model={isNew ? {} : salesEntity} onSubmit={saveEntity}>
           <Grid container xs={12} className={classes.rowContainer}>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel htmlFor='sales-description'> Description </InputLabel>
+                <InputLabel htmlFor='sales-description'> Descripción </InputLabel>
                 <Input
                   id='sales-description'
                   aria-describedby='description-helper'
@@ -169,14 +169,14 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
                   }}
                   onClick={() => description === '' && setDescription(salesEntity.description)}
                 />
-                <FormHelperText id='description-helper'>Insert Description</FormHelperText>
+                <FormHelperText id='description-helper'>Inserte Descripción </FormHelperText>
               </FormControl>
             </Grid>
           </Grid>
           <Grid container spacing={6}>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <InputLabel htmlFor='State'>State</InputLabel>
+                <InputLabel htmlFor='State'>Estado </InputLabel>
                 <NativeSelect
                   value={state ? state : salesEntity.state}
                   onChange={e => {
@@ -192,16 +192,17 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
                   <option value='SHIPPED'>SHIPPED</option>
                   <option value='DELIVERED'>DELIVERED</option>
                 </NativeSelect>
-                <FormHelperText>Some important helper text</FormHelperText>
+                <FormHelperText>Seleccione el estado de la Venta</FormHelperText>
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 id='sales-date'
-                label='Date'
+                label='Fecha'
                 type='date'
                 defaultValue='2017-05-24'
+                helperText="Ingrese Fecha de la Venta"
                 value={date ? date : salesEntity.date}
                 onChange={e => {
                   onChangeDate(e)
