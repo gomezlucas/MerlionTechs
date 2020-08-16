@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { IRootState } from 'app/shared/reducers'
 import { getEntity } from './sales.reducer'
-import { ISales } frogitm 'app/shared/model/sales.model'
+import { ISales } from 'app/shared/model/sales.model'
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
