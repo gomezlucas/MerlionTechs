@@ -29,13 +29,22 @@ import { valuesIn } from 'lodash'
 
 export interface ISalesUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   titleStyle: {
-    marginBottom: '1rem'
+    marginBottom: '0rem'
+  },
+  subTitleStyle: {
+    marginBottom: '2rem'
+  },
+  rowContainer: {
+    marginBottom: '1.5rem'
   },
   paperStyle: {
     backgroundColor: '#EBEBEB',
-    padding: '2rem 2rem'
+    padding: '4rem 10rem 6rem',
+    [theme.breakpoints.down('md')]: {
+      padding: '2rem 2rem'
+    }
   },
   buttonStyle: {
     backgroundColor: '#004f87',
@@ -46,7 +55,7 @@ const useStyles = makeStyles({
   buttonsContainer: {
     marginTop: '2rem'
   }
-})
+}))
 
 export const SalesUpdate = (props: ISalesUpdateProps) => {
   const classes = useStyles()
@@ -79,7 +88,6 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
       props.reset()
     } else {
       props.getEntity(props.match.params.id)
-      console.log(salesEntity)
     }
   }, [])
 
@@ -92,24 +100,23 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
   const saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
       if (description) {
-        values = { ...values, description: description }
+        values = { ...values, description }
       } else {
         values = { ...values, description: salesEntity.description }
       }
 
       if (state) {
-        values = { ...values, state: state }
+        values = { ...values, state }
       } else {
         values = { ...values, state: salesEntity.state }
       }
 
       if (date) {
-        values = { ...values, date: date }
+        values = { ...values, date }
       } else {
         values = { ...values, date: salesEntity.date }
       }
 
-      console.log(values, 'values')
       const entity = {
         ...salesEntity,
         ...values
@@ -130,25 +137,25 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
   }
 
   return (
-    <Paper className={classes.paperStyle}>
-      <Typography variant='h4' className={classes.titleStyle}>
+    <Paper className={classes.paperStyle} elevation={0}>
+      <Typography
+      variant='h4'
+      className={classes.titleStyle}
+      style={{marginBottom:"1rem"}}
+      >
         Crear o Editar Sales
       </Typography>
+      {!isNew ? (
+        <Typography variant='h6' className={classes.subTitleStyle}>
+          ID: {salesEntity.id}
+        </Typography>
+      ) : null}
+
       {loading ? (
         <p>Loading...</p>
       ) : (
         <AvForm model={isNew ? {} : salesEntity} onSubmit={saveEntity}>
-          {!isNew ? (
-            <Grid container spacing={8} xs={12}>
-              <Grid item xs={12}>
-                <FormControl>
-                  <InputLabel htmlFor='sales-id'> ID </InputLabel>
-                  <Input id='sales-id' aria-describedby='my-helper-text' name='id' disabled value={salesEntity.id} />
-                </FormControl>
-              </Grid>
-            </Grid>
-          ) : null}
-          <Grid container xs={12}>
+          <Grid container xs={12} className={classes.rowContainer}>
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel htmlFor='sales-description'> Description </InputLabel>

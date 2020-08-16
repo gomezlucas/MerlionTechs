@@ -25,12 +25,16 @@ import 'fontsource-roboto'
 
 export interface ISalesDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme=> ({
   root: {
     minWidth: 275,
     maxWidth: 500,
-    margin: '0 auto'
+    margin: '5rem auto',
+    [theme.breakpoints.down('md')]: {
+      margin: '0rem auto'
+    },
   },
+
   CardHeader: {
     background: '#2A6A9E',
     color: '#FFFFFF',
@@ -55,7 +59,7 @@ const useStyles = makeStyles({
     backgroundColor: '#FFFFFF',
     color: '#5E99C5'
   }
-})
+}))
 
 export const SalesDetail = (props: ISalesDetailProps) => {
   useEffect(() => {
