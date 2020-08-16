@@ -50,6 +50,14 @@ jhipster import-jdl maquetador-jdl.jh
 
 ![Sales Screen](readmeImg/SalesScreen.png)
 
+![Sales View](readmeImg/SalesViewn.png)
+
+![Sales new](readmeImg/SalesNew.png)
+
+![Sales Update](readmeImg/SalesUpdate.png)
+
+![Sales Update](readmeImg/SalesDelete.png)
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
